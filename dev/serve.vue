@@ -1,13 +1,13 @@
 <script>
-import Vue from 'vue';
-import { TableOnSteroidsSample } from '@/entry';
+import Vue from 'vue'
+import { TableOnSteroidsSample } from '@/entry'
 
 export default Vue.extend({
   name: 'ServeDev',
   components: {
-    TableOnSteroidsSample,
+    TableOnSteroidsSample
   }
-});
+})
 </script>
 
 <template>
