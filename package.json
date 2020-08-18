@@ -1,6 +1,6 @@
 {
   "name": "table-on-steroids",
-  "version": "0.0.2",
+  "version": "0.0.4",
   "description": "",
   "main": "dist/table-on-steroids.ssr.js",
   "browser": "dist/table-on-steroids.esm.js",
