@@ -1,0 +1,9 @@
+{
+  "name": "table-on-steroids",
+  "version": "0.0.1",
+  "description": "cool table",
+  "main": "index.js",
+  "repository": "https://github.com/Vterebenin/table-on-steroids.js",
+  "author": "Valentin Terebenin <terebenin.work@gmail.com>",
+  "license": "MIT"
+}

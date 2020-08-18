@@ -1,0 +1,31 @@
+Arguments: 
+  /usr/local/bin/node /usr/share/yarn/bin/yarn.js init
+
+PATH: 
+  /home/vter/.rbenv/plugins/ruby-build/bin:/home/vter/.rbenv/shims:/home/vter/.rbenv/bin:/home/vter/anaconda3/bin:/home/vter/.rbenv/plugins/ruby-build/bin:/home/vter/.rbenv/shims:/home/vter/.rbenv/bin:/home/vter/anaconda3/bin:/home/vter/.local/bin:/home/vter/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/games:/usr/local/games:/snap/bin:/usr/share/rvm/bin:/Users/denis/.npm-global/bin:/Users/denis/.npm-global/bin
+
+Yarn version: 
+  1.21.1
+
+Node version: 
+  13.11.0
+
+Platform: 
+  linux x64
+
+Trace: 
+  SyntaxError: /home/vter/dev/libs/table-on-steroids/package.json: Unexpected end of JSON input
+      at JSON.parse (<anonymous>)
+      at /usr/share/yarn/lib/cli.js:1625:59
+      at Generator.next (<anonymous>)
+      at step (/usr/share/yarn/lib/cli.js:310:30)
+      at /usr/share/yarn/lib/cli.js:321:13
+
+npm manifest: 
+  
+
+yarn manifest: 
+  No manifest
+
+Lockfile: 
+  No lockfile
