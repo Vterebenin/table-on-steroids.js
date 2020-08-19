@@ -1,6 +1,7 @@
 <template>
   <div id="app">
     <table-on-steroids-sample
+      :height="500"
       :headers="headers"
       :items="items"
     />
@@ -28,23 +29,14 @@ export default Vue.extend({
           value: 'second'
         }
       ],
-      items: [
-        {
-          first: 'Значение под заголовком 1 1',
-          second: 'Значение под заголовком 2 1'
-        },
-        {
-          first: 'Значение под заголовком 1 2',
-          second: 'Значение под заголовком 2 2'
-        }
-      ]
+      items: []
     }
   },
   created () {
     for (let i = 0; i < 1000; i++) {
       this.items.push({
-        first: 'Значение под заголовком 1 2',
-        second: 'Значение под заголовком 2 2'
+        first: `Значение под заголовком 1 ${i}`,
+        second: `Значение под заголовком 2 ${i}`
       })
     }
   }

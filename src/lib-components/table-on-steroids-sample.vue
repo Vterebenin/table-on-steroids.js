@@ -1,43 +1,8 @@
-<!-- <template> -->
-<!--   <div class="TOS"> -->
-<!--     <table> -->
-<!--       <slot -->
-<!--         name="head" -->
-<!--         :headers="headers" -->
-<!--         > -->
-<!--         <tr> -->
-<!--           <th -->
-<!--             v-for="(h, idx) in headers" -->
-<!--             :key="idx" -->
-<!--             > -->
-<!--             {{ h.text }} -->
-<!--           </th> -->
-<!--         </tr> -->
-<!--       </slot> -->
-<!--       <slot -->
-<!--         name="body" -->
-<!--         :items="items" -->
-<!--         :headers="headers" -->
-<!--         > -->
-<!--         <tr -->
-<!--           v-for="(item, index) in items" -->
-<!--           :key="index" -->
-<!--           > -->
-<!--           <td -->
-<!--             v-for="({ value }, idx) in headers" -->
-<!--             :key="idx" -->
-<!--             > -->
-<!--             {{ item[value] }} -->
-<!--           </td> -->
-<!--         </tr> -->
-<!--       </slot> -->
-<!--     </table> -->
-<!--   </div> -->
-<!-- </template> -->
-
 <script>
+import { convertToUnit, debounce } from '../helpers/util'
+
 export default {
-  name: 'TableOnSteroidsSample', // vue component name
+  name: 'TableOnSteroidsSample',
   props: {
     headers: {
       type: Array,
@@ -46,79 +11,140 @@ export default {
     items: {
       type: Array,
       default: () => []
+    },
+    chunkSize: {
+      type: Number,
+      default: () => 10
+    },
+    headerHeight: {
+      type: Number,
+      default: () => 20
+    },
+    height: {
+      type: [Number, String],
+      default: () => 500
+    },
+    rowHeight: {
+      type: Number,
+      default: () => 20
     }
   },
   data () {
     return {
-      counter: 5,
-      initCounter: 5,
-      message: {
-        action: null,
-        amount: null
-      }
+      scrollTop: 0,
+      oldChunk: 0,
+      scrollDebounce: null,
+      invalidateCache: false
     }
   },
   computed: {
-    changedBy () {
-      const { message } = this
-      if (!message.action) return 'initialized'
-      return `${message?.action} ${message.amount ?? ''}`.trim()
+    itemsLength () {
+      return this.items.length
+    },
+    totalHeight () {
+      return (this.itemsLength * this.rowHeight) + this.headerHeight
+    },
+    topIndex () {
+      return Math.floor(this.scrollTop / this.rowHeight)
+    },
+    chunkIndex () {
+      return Math.floor(this.topIndex / this.chunkSize)
+    },
+    startIndex () {
+      return Math.max(0, (this.chunkIndex * this.chunkSize) - this.chunkSize)
+    },
+    offsetTop () {
+      return Math.max(0, this.startIndex * this.rowHeight)
+    },
+    stopIndex () {
+      return Math.min(this.startIndex + (this.chunkSize * 3), this.itemsLength)
+    },
+    offsetBottom () {
+      return Math.max(0, (this.itemsLength - this.stopIndex - this.startIndex) * this.rowHeight)
     }
   },
+  watch: {
+    chunkIndex (newValue, oldValue) {
+      this.oldChunk = oldValue
+    },
+    items () {
+      this.cachedItems = null
+      this.$refs.table.scrollTop = 0
+    }
+  },
+  created () {
+    this.cachedItems = null
+  },
+  mounted () {
+    this.scrollDebounce = debounce(this.onScroll, 50)
+    this.$refs.table.addEventListener('scroll', this.scrollDebounce, { passive: true })
+  },
+  beforeUnmount () {
+    this.$refs.table.removeEventListener('scroll', this.scrollDebounce)
+  },
   methods: {
-    genTable (arg) {
-      return [
+    genHeader () {
+      return this.$createElement('thead', [
         this.$createElement('tr',
-          {},
           this.headers.map((el) => {
-            return this.$createElement('th', {}, [el.text])
+            return this.$createElement('th', [el.text])
           })
-        ),
-        this.items.map((item) => {
-          return this.$createElement('tr',
-            {},
-            this.headers.map((el) => {
-              return this.$createElement('td', {}, [item[el.value]])
-            })
-          )
-        })
-      ]
+        )
+      ])
     },
-    decrement (arg) {
-      const amount = (typeof arg !== 'number') ? 1 : arg
-      this.counter -= amount
-      this.message.action = 'decremented by'
-      this.message.amount = amount
+    genBody () {
+      if (this.cachedItems === null || this.chunkIndex !== this.oldChunk) {
+        this.cachedItems = this.genItems()
+        this.oldChunk = this.chunkIndex
+      }
+      console.log(this.startIndex, this.stopIndex)
+      console.log((this.chunkIndex * this.chunkSize) - this.chunkSize)
+
+      console.log(this.offsetTop, this.offsetBottom)
+      return this.$createElement('tbody', [
+        this.$createElement('tr', { style: this.createStyleHeight(this.offsetTop) }),
+        this.cachedItems,
+        this.$createElement('tr', { style: this.createStyleHeight(this.offsetBottom) })
+      ])
     },
-    reset () {
-      this.counter = this.initCounter
-      this.message.action = 'reset'
-      this.message.amount = null
+    genItems () {
+      const items = this.items.slice(this.startIndex, this.stopIndex)
+      return items.map((item) => {
+        return this.$createElement('tr',
+          this.headers.map((el) => {
+            return this.$createElement('td', [item[el.value]])
+          })
+        )
+      })
+    },
+    createStyleHeight (height) {
+      return {
+        height: `${height}px`
+      }
+    },
+    onScroll (e) {
+      const target = e.target
+      console.log('test')
+      this.scrollTop = target.scrollTop
     }
   },
   render (h) {
     return h('div', {
-      staticClass: 'table'
+      ref: 'table',
+      staticClass: 'tos-table',
+      style: {
+        height: convertToUnit(this.height)
+      }
     }, [
       this.$slots.top,
-      this.$createElement('table', {}, [this.genTable()]),
+      this.$createElement('table', [this.genHeader(), this.genBody(this.items)]),
       this.$slots.bottom
     ])
   }
 }
 </script>
-
-<style scoped>
-.table-on-steroids-sample {
-  display: block;
-  width: 400px;
-  margin: 25px auto;
-  border: 1px solid #ccc;
-  background: #eaeaea;
-  text-align: center;
-  padding: 25px;
-}
-.table-on-steroids-sample p {
-  margin: 0 0 1em;
-}
+<style scoped lang="sass">
+.tos-table
+  overflow-y: scroll
+  width: 800px
 </style>
