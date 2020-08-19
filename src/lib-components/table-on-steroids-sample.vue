@@ -1,39 +1,39 @@
-<template>
-  <div class="TOS">
-    <table>
-      <slot
-        name="head"
-        :headers="headers"
-        >
-        <tr>
-          <th
-            v-for="(h, idx) in headers"
-            :key="idx"
-            >
-            {{ h.text }}
-          </th>
-        </tr>
-      </slot>
-      <slot
-        name="body"
-        :items="items"
-        :headers="headers"
-        >
-        <tr
-          v-for="(item, index) in items"
-          :key="index"
-          >
-          <td
-            v-for="({ value }, idx) in headers"
-            :key="idx"
-            >
-            {{ item[value] }}
-          </td>
-        </tr>
-      </slot>
-    </table>
-  </div>
-</template>
+<!-- <template> -->
+<!--   <div class="TOS"> -->
+<!--     <table> -->
+<!--       <slot -->
+<!--         name="head" -->
+<!--         :headers="headers" -->
+<!--         > -->
+<!--         <tr> -->
+<!--           <th -->
+<!--             v-for="(h, idx) in headers" -->
+<!--             :key="idx" -->
+<!--             > -->
+<!--             {{ h.text }} -->
+<!--           </th> -->
+<!--         </tr> -->
+<!--       </slot> -->
+<!--       <slot -->
+<!--         name="body" -->
+<!--         :items="items" -->
+<!--         :headers="headers" -->
+<!--         > -->
+<!--         <tr -->
+<!--           v-for="(item, index) in items" -->
+<!--           :key="index" -->
+<!--           > -->
+<!--           <td -->
+<!--             v-for="({ value }, idx) in headers" -->
+<!--             :key="idx" -->
+<!--             > -->
+<!--             {{ item[value] }} -->
+<!--           </td> -->
+<!--         </tr> -->
+<!--       </slot> -->
+<!--     </table> -->
+<!--   </div> -->
+<!-- </template> -->
 
 <script>
 export default {
@@ -66,11 +66,23 @@ export default {
     }
   },
   methods: {
-    increment (arg) {
-      const amount = (typeof arg !== 'number') ? 1 : arg
-      this.counter += amount
-      this.message.action = 'incremented by'
-      this.message.amount = amount
+    genTable (arg) {
+      return [
+        this.$createElement('tr',
+          {},
+          this.headers.map((el) => {
+            return this.$createElement('th', {}, [el.text])
+          })
+        ),
+        this.items.map((item) => {
+          return this.$createElement('tr',
+            {},
+            this.headers.map((el) => {
+              return this.$createElement('td', {}, [item[el.value]])
+            })
+          )
+        })
+      ]
     },
     decrement (arg) {
       const amount = (typeof arg !== 'number') ? 1 : arg
@@ -83,6 +95,15 @@ export default {
       this.message.action = 'reset'
       this.message.amount = null
     }
+  },
+  render (h) {
+    return h('div', {
+      staticClass: 'table'
+    }, [
+      this.$slots.top,
+      this.$createElement('table', {}, [this.genTable()]),
+      this.$slots.bottom
+    ])
   }
 }
 </script>

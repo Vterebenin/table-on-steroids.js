@@ -3,7 +3,7 @@
     <table-on-steroids-sample
       :headers="headers"
       :items="items"
-      />
+    />
   </div>
 </template>
 
@@ -38,6 +38,14 @@ export default Vue.extend({
           second: 'Значение под заголовком 2 2'
         }
       ]
+    }
+  },
+  created () {
+    for (let i = 0; i < 1000; i++) {
+      this.items.push({
+        first: 'Значение под заголовком 1 2',
+        second: 'Значение под заголовком 2 2'
+      })
     }
   }
 })
