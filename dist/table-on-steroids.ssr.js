@@ -219,7 +219,7 @@ var __vue_render__ = function __vue_render__() {
 
   return _c('div', {
     staticClass: "table-on-steroids-sample"
-  }, [_vm._ssrNode("<p data-v-3876f46a>" + _vm._ssrEscape("The counter was " + _vm._s(_vm.changedBy) + " to ") + "<b data-v-3876f46a>" + _vm._ssrEscape(_vm._s(_vm.counter)) + "</b>.</p> <button data-v-3876f46a>\n    Click +1\n  </button> <button data-v-3876f46a>\n    Click -1\n  </button> <button data-v-3876f46a>\n    Click +5\n  </button> <button data-v-3876f46a>\n    Click -5\n  </button> <button data-v-3876f46a>\n    Reset\n  </button>")]);
+  }, [_vm._ssrNode("<p data-v-18f54d4d>" + _vm._ssrEscape("The counter was " + _vm._s(_vm.changedBy) + " to ") + "<b data-v-18f54d4d>" + _vm._ssrEscape(_vm._s(_vm.counter)) + "</b>.</p> <button data-v-18f54d4d>\n    Click +1\n  </button> <button data-v-18f54d4d>\n    Click -1\n  </button> <button data-v-18f54d4d>\n    Click +5\n  </button> <button data-v-18f54d4d>\n    Click -5\n  </button> <button data-v-18f54d4d>\n    Reset\n  </button>")]);
 };
 
 var __vue_staticRenderFns__ = [];
@@ -227,8 +227,8 @@ var __vue_staticRenderFns__ = [];
 
 var __vue_inject_styles__ = function __vue_inject_styles__(inject) {
   if (!inject) return;
-  inject("data-v-3876f46a_0", {
-    source: ".table-on-steroids-sample[data-v-3876f46a]{display:block;width:400px;margin:25px auto;border:1px solid #ccc;background:#eaeaea;text-align:center;padding:25px}.table-on-steroids-sample p[data-v-3876f46a]{margin:0 0 1em}",
+  inject("data-v-18f54d4d_0", {
+    source: ".table-on-steroids-sample[data-v-18f54d4d]{display:block;width:400px;margin:25px auto;border:1px solid #ccc;background:#eaeaea;text-align:center;padding:25px}.table-on-steroids-sample p[data-v-18f54d4d]{margin:0 0 1em}",
     map: undefined,
     media: undefined
   });
@@ -236,10 +236,10 @@ var __vue_inject_styles__ = function __vue_inject_styles__(inject) {
 /* scoped */
 
 
-var __vue_scope_id__ = "data-v-3876f46a";
+var __vue_scope_id__ = "data-v-18f54d4d";
 /* module identifier */
 
-var __vue_module_identifier__ = "data-v-3876f46a";
+var __vue_module_identifier__ = "data-v-18f54d4d";
 /* functional template */
 
 var __vue_is_functional_template__ = false;

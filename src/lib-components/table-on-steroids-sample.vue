@@ -1,6 +1,53 @@
+<template>
+  <div class="TOS">
+    <table>
+      <slot
+        name="head"
+        :headers="headers"
+        >
+        <tr>
+          <th
+            v-for="(h, idx) in headers"
+            :key="idx"
+            >
+            {{ h.text }}
+          </th>
+        </tr>
+      </slot>
+      <slot
+        name="body"
+        :items="items"
+        :headers="headers"
+        >
+        <tr
+          v-for="(item, index) in items"
+          :key="index"
+          >
+          <td
+            v-for="({ value }, idx) in headers"
+            :key="idx"
+            >
+            {{ item[value] }}
+          </td>
+        </tr>
+      </slot>
+    </table>
+  </div>
+</template>
+
 <script>
 export default {
   name: 'TableOnSteroidsSample', // vue component name
+  props: {
+    headers: {
+      type: Array,
+      default: () => []
+    },
+    items: {
+      type: Array,
+      default: () => []
+    }
+  },
   data () {
     return {
       counter: 5,
@@ -40,38 +87,17 @@ export default {
 }
 </script>
 
-<template>
-  <div class="table-on-steroids-sample">
-    <p>The counter was {{ changedBy }} to <b>{{ counter }}</b>.</p>
-    <button @click="increment">
-      Click +1
-    </button>
-    <button @click="decrement">
-      Click -1
-    </button>
-    <button @click="increment(5)">
-      Click +5
-    </button>
-    <button @click="decrement(5)">
-      Click -5
-    </button>
-    <button @click="reset">
-      Reset
-    </button>
-  </div>
-</template>
-
 <style scoped>
-  .table-on-steroids-sample {
-    display: block;
-    width: 400px;
-    margin: 25px auto;
-    border: 1px solid #ccc;
-    background: #eaeaea;
-    text-align: center;
-    padding: 25px;
-  }
-  .table-on-steroids-sample p {
-    margin: 0 0 1em;
-  }
+.table-on-steroids-sample {
+  display: block;
+  width: 400px;
+  margin: 25px auto;
+  border: 1px solid #ccc;
+  background: #eaeaea;
+  text-align: center;
+  padding: 25px;
+}
+.table-on-steroids-sample p {
+  margin: 0 0 1em;
+}
 </style>
