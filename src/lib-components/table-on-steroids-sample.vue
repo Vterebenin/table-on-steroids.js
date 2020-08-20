@@ -14,11 +14,11 @@ export default {
     },
     chunkSize: {
       type: Number,
-      default: () => 10
+      default: () => 25
     },
     headerHeight: {
       type: Number,
-      default: () => 20
+      default: () => 48
     },
     height: {
       type: [Number, String],
@@ -26,7 +26,7 @@ export default {
     },
     rowHeight: {
       type: Number,
-      default: () => 20
+      default: () => 48
     }
   },
   data () {
@@ -60,7 +60,7 @@ export default {
       return Math.min(this.startIndex + (this.chunkSize * 3), this.itemsLength)
     },
     offsetBottom () {
-      return Math.max(0, (this.itemsLength - this.stopIndex - this.startIndex) * this.rowHeight)
+      return Math.max(0, (this.itemsLength - this.stopIndex) * this.rowHeight)
     }
   },
   watch: {
@@ -87,7 +87,7 @@ export default {
       return this.$createElement('thead', [
         this.$createElement('tr',
           this.headers.map((el) => {
-            return this.$createElement('th', [el.text])
+            return this.$createElement('th', { style: this.createStyleHeight(this.headerHeight) }, [el.text])
           })
         )
       ])
@@ -97,10 +97,9 @@ export default {
         this.cachedItems = this.genItems()
         this.oldChunk = this.chunkIndex
       }
-      console.log(this.startIndex, this.stopIndex)
-      console.log((this.chunkIndex * this.chunkSize) - this.chunkSize)
+      console.log(this.itemsLength, this.totalHeight, this.topIndex, this.chunkIndex, this.startIndex, this.offsetTop, this.stopIndex, this.offsetBottom, 'test')
+      console.log(this.scrollTop, 'test')
 
-      console.log(this.offsetTop, this.offsetBottom)
       return this.$createElement('tbody', [
         this.$createElement('tr', { style: this.createStyleHeight(this.offsetTop) }),
         this.cachedItems,
@@ -112,7 +111,7 @@ export default {
       return items.map((item) => {
         return this.$createElement('tr',
           this.headers.map((el) => {
-            return this.$createElement('td', [item[el.value]])
+            return this.$createElement('td', { style: this.createStyleHeight(this.rowHeight) }, [item[el.value]])
           })
         )
       })
@@ -124,27 +123,43 @@ export default {
     },
     onScroll (e) {
       const target = e.target
-      console.log('test')
       this.scrollTop = target.scrollTop
+    },
+    genTable () {
+      return this.$createElement('div', {
+        staticClass: 'tos-virtual-table__table',
+        ref: 'table'
+      }, [
+        this.$createElement('table', [this.genHeader(), this.genBody(this.items)])
+      ])
     }
   },
   render (h) {
     return h('div', {
-      ref: 'table',
-      staticClass: 'tos-table',
+      staticClass: 'tos-virtual-table',
       style: {
         height: convertToUnit(this.height)
       }
     }, [
       this.$slots.top,
-      this.$createElement('table', [this.genHeader(), this.genBody(this.items)]),
+      this.genTable(),
       this.$slots.bottom
     ])
   }
 }
 </script>
 <style scoped lang="sass">
-.tos-table
-  overflow-y: scroll
-  width: 800px
+table
+  border-spacing: 0
+  td, th
+    padding: 0
+.tos-virtual-table
+  position: relative
+  overflow-y: auto
+  display: flex
+  .tos-virtual-table__table
+    width: 50%
+    height: 100%
+    overflow-x: auto
+
 </style>

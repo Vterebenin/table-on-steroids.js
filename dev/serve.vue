@@ -1,7 +1,7 @@
 <template>
   <div id="app">
     <table-on-steroids-sample
-      :height="500"
+      :height="53*10"
       :headers="headers"
       :items="items"
     />
